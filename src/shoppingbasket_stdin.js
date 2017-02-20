@@ -14,6 +14,10 @@ getStdin().then(function(stdinData) {
 
 	var cc = basket.getCostedContents();
 
-	console.log(receiptGenerator.getReceipt(cc));
+	if (process.argv[2].match(/^json$/i)){
+		console.log(JSON.stringify(cc));
+	} else {
+		console.log(receiptGenerator.getReceipt(cc));
+	}
 });
 

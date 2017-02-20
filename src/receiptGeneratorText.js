@@ -9,11 +9,13 @@ function capitalizeFirstLetter(string) {
 module.exports = {
 	"getReceipt": function(data){
 		var s = "";
+		
 		s += "Basket receipt\n";
 		s += "==============\n";
 		s += "\n";
 		s += sprintf('%-16s %s   %s\n','Product', 'Quantity', 'Total');
 		s += sprintf('%-16s %s   %s\n','-------', '--------', '-----');
+
 		data.items.forEach(function(item){
 			s += sprintf('%-21s %3d %7.2f \n',  capitalizeFirstLetter(item.name), item.quantity, item.cost/100);
 			if (item.discount && item.discount.amount > 0){

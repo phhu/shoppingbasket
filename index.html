@@ -7,32 +7,32 @@
 		body {margin:10px;}
 	</style>
  </head>
- <body  onload="parseList(document.getElementById('list').value);">
+ <body  onload="BASKETUTILS.update();">
 
    <h2>Basket example</h2>
    Enter a space or comma separated list here:
    <br />
-   <textarea id="list" placeholder='e.g. "garlic papaya Orange orange apple"' cols="80" rows="3" style="max-width: 400px;">papaya orange papaya papaya orange garlic</textarea>
+   <textarea id="list" placeholder='e.g. "garlic papaya Orange orange apple"' cols="80" rows="3" style="max-width: 400px;"></textarea>
    <br />
-   <input type="button" value="Process list" onclick="parseList(document.getElementById('list').value);"></input>
-    <input type="button" value="Empty Basket" onclick="basket.empty();update();">
+   <input type="button" value="Process list" onclick="BASKETUTILS.parseList();"></input>
+    <input type="button" value="Empty Basket" onclick="basket.empty();BASKETUTILS.update();">
    <table style="margin:10px 0px">
 	<tr>
 		<td>Add:</td>
 		<td>
-		<input type="button" value="Apple" onclick="basket.addItem('apple');update();">
-		<input type="button" value="Orange" onclick="basket.addItem('orange');update();">
-		<input type="button" value="Garlic" onclick="basket.addItem('garlic');update();">
-		<input type="button" value="Papaya" onclick="basket.addItem('papaya');update();">
+		<input type="button" value="Apple" onclick="BASKETUTILS.doAdd('apple');">
+		<input type="button" value="Orange" onclick="BASKETUTILS.doAdd('orange');">
+		<input type="button" value="Garlic" onclick="BASKETUTILS.doAdd('garlic');">
+		<input type="button" value="Papaya" onclick="BASKETUTILS.doAdd('papaya');">
 		</td>
 	</tr>
     <tr>
 		<td>Remove:</td>
 		<td>
-			<input type="button" value="Apple" onclick="basket.removeItem('apple');update();">
-			<input type="button" value="Orange" onclick="basket.removeItem('orange');update();">
-			<input type="button" value="Garlic" onclick="basket.removeItem('garlic');update();">
-			<input type="button" value="Papaya" onclick="basket.removeItem('papaya');update();">
+			<input type="button" value="Apple" onclick="BASKETUTILS.doRemove('apple');">
+			<input type="button" value="Orange" onclick="BASKETUTILS.doRemove('orange');">
+			<input type="button" value="Garlic" onclick="BASKETUTILS.doRemove('garlic');">
+			<input type="button" value="Papaya" onclick="BASKETUTILS.doRemove('papaya');">
 		</td>
     </tr>
 	</table>
@@ -40,38 +40,43 @@
    	
    	<h3>Receipt</h3>
    	<pre id="receipt"  style="border:1px black solid;max-width: 400px"  ></pre>
-	<input type="button" value="Toggle JSON contents" onclick="toggleBasketContents();" />
+	<input type="button" value="Toggle JSON contents" onclick="BASKETUTILS.toggleBasketContents();" />
 	<div id="basketcontents" style="display:none">
 		<h3>Basket contents</h3>
 		<pre id="contents" style="border:1px black solid;max-width: 400px"  ></pre>
 	</div>
  	<script type="text/javascript" src="dist/shoppingBasket.min.js"></script>
 	<script>
-		function parseList(list){
+		var BASKETUTILS = {
+		doAdd:function (item){
+			basket.addItem(item);
+			this.update();
+		},
+		doRemove: function (item){
+			basket.removeItem(item);
+			this.update();
+		},
+		parseList: function (){
+			var list = document.getElementById('list').value;
 			var l = list.split(/[\s,;]+/);
-			console.log(l);
 			basket.empty();
 			l.forEach(function(item){
 				if (item.match(/\w/)){
 					basket.addItem(item);
 				}
 			});
-			update();
-		}
-		
-		function toggleBasketContents(){
+			this.update();
+		},
+		toggleBasketContents: function(){
 			var bc = document.getElementById('basketcontents');
-			if (bc.style.display === "none"){
-				bc.style.display="";
-			} else {
-				bc.style.display="none";
-			}
-		}
+			bc.style.display = (bc.style.display === "none") ? "" : "none";
+		},
 		
-		function update(){
+		update: function(){
 			document.getElementById('contents').innerHTML = JSON.stringify(basket.getCostedContents(),null,2);
 			document.getElementById('receipt').innerHTML = receiptGenerator.getReceipt(basket.getCostedContents());
 		}
+	}
 
 	</script>	
  </body>
