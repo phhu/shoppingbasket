@@ -48,35 +48,35 @@
  	<script type="text/javascript" src="dist/shoppingBasket.min.js"></script>
 	<script>
 		var BASKETUTILS = {
-		doAdd:function (item){
-			basket.addItem(item);
-			this.update();
-		},
-		doRemove: function (item){
-			basket.removeItem(item);
-			this.update();
-		},
-		parseList: function (){
-			var list = document.getElementById('list').value;
-			var l = list.split(/[\s,;]+/);
-			basket.empty();
-			l.forEach(function(item){
-				if (item.match(/\w/)){
-					basket.addItem(item);
-				}
-			});
-			this.update();
-		},
-		toggleBasketContents: function(){
-			var bc = document.getElementById('basketcontents');
-			bc.style.display = (bc.style.display === "none") ? "" : "none";
-		},
-		
-		update: function(){
-			document.getElementById('contents').innerHTML = JSON.stringify(basket.getCostedContents(),null,2);
-			document.getElementById('receipt').innerHTML = receiptGenerator.getReceipt(basket.getCostedContents());
-		}
-	}
+			doAdd:function (item){
+				basket.addItem(item);
+				this.update();
+			},
+			doRemove: function (item){
+				basket.removeItem(item);
+				this.update();
+			},
+			parseList: function (){
+				var list = document.getElementById('list').value;
+				var l = list.split(/[\s,;]+/);
+				basket.empty();
+				l.forEach(function(item){
+					if (item.match(/\w/)){
+						basket.addItem(item);
+					}
+				});
+				this.update();
+			},
+			toggleBasketContents: function(){
+				var bc = document.getElementById('basketcontents');
+				bc.style.display = (bc.style.display === "none") ? "" : "none";
+			},
+			
+			update: function(){
+				document.getElementById('contents').innerHTML = JSON.stringify(basket.getCostedContents(),null,2);
+				document.getElementById('receipt').innerHTML = receiptGenerator.getReceipt(basket.getCostedContents());
+			}
+		};
 
 	</script>	
  </body>
