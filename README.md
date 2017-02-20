@@ -14,14 +14,13 @@ Usage
 
 Command line / node.js 
 ======================
-
-Pipe a list of items (space / comma / semi-colon / newline separated) to src/shoppingbasketcli.js 
-
-```echo orange orange papaya,garlic | node src/shoppingbasketcli.js```
- 
-Alternatively you can send arguments to src/shoppingbasket.js (space / comma / semi-colon separated) 
+You can send arguments to src/shoppingbasket.js (space / comma / semi-colon separated) 
 
 ```node src/shoppingbasket.js orange,apple, garlic papaya papaya papaya```
+
+Alternatively pipe a list of items (space / comma / semi-colon / newline separated) to src/shoppingbasket_stdin.js 
+
+```echo orange orange papaya,garlic | node src/shoppingbasket_stdin.js```
 
 Browser
 =======
