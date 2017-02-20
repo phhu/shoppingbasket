@@ -2,6 +2,23 @@ This is a simple shopping basket written in node.js
 
 It accepts items as specified in src/itemspecs.js - garlic, apple, orange, papaya - and generates a receipt (or JSON data) detailing the cost.
 
+```
+Basket receipt
+==============
+
+Product          Quantity   Total
+-------          --------   -----
+Papaya                  3    1.50 
+* Papaya 3 for 2        1   -0.50
+Orange                  2    0.60 
+Garlic                  1    0.15 
+
+Total without discounts      2.25
+Total discounts             -0.50
+
+TOTAL                        1.75
+```
+
 Install
 =======
 
