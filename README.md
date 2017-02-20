@@ -27,3 +27,5 @@ Browser
 =======
 
 Altenatively browse the index.html file for a working example in the browser.
+
+https://cdn.rawgit.com/phhu/shoppingbasket/master/index.html
