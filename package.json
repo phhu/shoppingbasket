@@ -8,17 +8,18 @@
   },
   "dependencies": {
     "get-stdin": "^5.0.1",
-    "sprintf-js": "^1.0.3",
-    "uglify-js": "^2.7.5"
+    "sprintf-js": "^1.0.3"
   },
   "devDependencies": {
+    "browserify": "^14.1.0",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "uglify-js": "^2.7.5"
   },
-  "repository" :{ 
-    "type" : "git",
-    "url" : "https://github.com/phhu/shoppingbasket.git"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phhu/shoppingbasket.git"
+  },
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "build": "browserify src/shoppingbasket.js | uglifyjs -c >dist/shoppingbasket.min.js"
