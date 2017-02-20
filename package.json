@@ -15,6 +15,10 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0"
   },
+  "repository" :{ 
+    "type" : "git",
+    "url" : "https://github.com/phhu/shoppingbasket.git"
+  }
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "build": "browserify -r fs:browserify-fs src/shoppingbasket.js | uglifyjs -c >dist/shoppingbasket.min.js"
