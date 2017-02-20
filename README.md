@@ -41,4 +41,4 @@ Build
 
 Browserify and uglify are used to create the version for the browser
 
-```rpm run build```
+```npm run build```
