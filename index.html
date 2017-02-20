@@ -1,83 +1,82 @@
- <!DOCTYPE html>
- <html>
- <head>
+<!DOCTYPE html>
+<html>
+<head>
 	<title>Basket example</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<style>
 		body {margin:10px;}
 	</style>
- </head>
- <body  onload="BASKETUTILS.update();">
+</head>
+<body onload="BASKETUTILS.update();">
 
-   <h2>Basket example</h2>
-   Enter a space or comma separated list here:
-   <br />
-   <textarea id="list" placeholder='e.g. "garlic papaya Orange orange apple"' cols="80" rows="3" style="max-width: 400px;"></textarea>
-   <br />
-   <input type="button" value="Process list" onclick="BASKETUTILS.parseList();"></input>
-    <input type="button" value="Empty Basket" onclick="basket.empty();BASKETUTILS.update();">
-   <table style="margin:10px 0px">
-	<tr>
-		<td>Add:</td>
-		<td>
-		<input type="button" value="Apple" onclick="BASKETUTILS.doAdd('apple');">
-		<input type="button" value="Orange" onclick="BASKETUTILS.doAdd('orange');">
-		<input type="button" value="Garlic" onclick="BASKETUTILS.doAdd('garlic');">
-		<input type="button" value="Papaya" onclick="BASKETUTILS.doAdd('papaya');">
-		</td>
-	</tr>
-    <tr>
-		<td>Remove:</td>
-		<td>
-			<input type="button" value="Apple" onclick="BASKETUTILS.doRemove('apple');">
-			<input type="button" value="Orange" onclick="BASKETUTILS.doRemove('orange');">
-			<input type="button" value="Garlic" onclick="BASKETUTILS.doRemove('garlic');">
-			<input type="button" value="Papaya" onclick="BASKETUTILS.doRemove('papaya');">
-		</td>
-    </tr>
+	<h2>Basket example</h2>
+	Enter a space or comma separated list here:
+	<br />
+	<textarea id="list" placeholder='e.g. "garlic papaya Orange orange apple"' cols="80" rows="3" style="max-width: 400px;"></textarea>
+	<br />
+	<input type="button" value="Process list" onclick="BASKETUTILS.parseList();"></input>
+	<input type="button" value="Empty Basket" onclick="basket.empty();BASKETUTILS.update();">
+	<table style="margin:10px 0px">
+		<tr>
+			<td>Add:</td>
+			<td>
+				<input type="button" value="Apple" onclick="BASKETUTILS.doAdd('apple');">
+				<input type="button" value="Orange" onclick="BASKETUTILS.doAdd('orange');">
+				<input type="button" value="Garlic" onclick="BASKETUTILS.doAdd('garlic');">
+				<input type="button" value="Papaya" onclick="BASKETUTILS.doAdd('papaya');">
+			</td>
+		</tr>
+	    <tr>
+			<td>Remove:</td>
+			<td>
+				<input type="button" value="Apple" onclick="BASKETUTILS.doRemove('apple');">
+				<input type="button" value="Orange" onclick="BASKETUTILS.doRemove('orange');">
+				<input type="button" value="Garlic" onclick="BASKETUTILS.doRemove('garlic');">
+				<input type="button" value="Papaya" onclick="BASKETUTILS.doRemove('papaya');">
+			</td>
+	    </tr>
 	</table>
 	
-   	
    	<h3>Receipt</h3>
    	<pre id="receipt"  style="border:1px black solid;max-width: 400px"  ></pre>
+	
 	<input type="button" value="Toggle JSON contents" onclick="BASKETUTILS.toggleBasketContents();" />
 	<div id="basketcontents" style="display:none">
 		<h3>Basket contents</h3>
 		<pre id="contents" style="border:1px black solid;max-width: 400px"  ></pre>
 	</div>
+
  	<script type="text/javascript" src="dist/shoppingBasket.min.js"></script>
 	<script>
 		var BASKETUTILS = {
-		doAdd:function (item){
-			basket.addItem(item);
-			this.update();
-		},
-		doRemove: function (item){
-			basket.removeItem(item);
-			this.update();
-		},
-		parseList: function (){
-			var list = document.getElementById('list').value;
-			var l = list.split(/[\s,;]+/);
-			basket.empty();
-			l.forEach(function(item){
-				if (item.match(/\w/)){
-					basket.addItem(item);
-				}
-			});
-			this.update();
-		},
-		toggleBasketContents: function(){
-			var bc = document.getElementById('basketcontents');
-			bc.style.display = (bc.style.display === "none") ? "" : "none";
-		},
-		
-		update: function(){
-			document.getElementById('contents').innerHTML = JSON.stringify(basket.getCostedContents(),null,2);
-			document.getElementById('receipt').innerHTML = receiptGenerator.getReceipt(basket.getCostedContents());
-		}
-	}
-
+			doAdd:function (item){
+				basket.addItem(item);
+				this.update();
+			},
+			doRemove: function (item){
+				basket.removeItem(item);
+				this.update();
+			},
+			parseList: function (){
+				var list = document.getElementById('list').value;
+				var l = list.split(/[\s,;]+/);
+				basket.empty();
+				l.forEach(function(item){
+					if (item.match(/\w/)){
+						basket.addItem(item);
+					}
+				});
+				this.update();
+			},
+			toggleBasketContents: function(){
+				var bc = document.getElementById('basketcontents');
+				bc.style.display = (bc.style.display === "none") ? "" : "none";
+			},
+			update: function(){
+				document.getElementById('contents').innerHTML = JSON.stringify(basket.getCostedContents(),null,2);
+				document.getElementById('receipt').innerHTML = receiptGenerator.getReceipt(basket.getCostedContents());
+			}
+		};
 	</script>	
- </body>
- </html>
+</body>
+</html>
