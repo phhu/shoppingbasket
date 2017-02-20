@@ -22,6 +22,10 @@ Alternatively pipe a list of items (space / comma / semi-colon / newline separat
 
 ```echo orange orange papaya,garlic | node src/shoppingbasket_stdin.js```
 
+Specify a JSON argument with this to get the output in JSON instead:
+
+```echo orange orange papaya,garlic | node src/shoppingbasket_stdin.js json```
+
 Browser
 =======
 
