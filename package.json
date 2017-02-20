@@ -21,7 +21,7 @@
   }
   "scripts": {
     "test": "./node_modules/.bin/mocha",
-    "build": "browserify -r fs:browserify-fs src/shoppingbasket.js | uglifyjs -c >dist/shoppingbasket.min.js"
+    "build": "browserify src/shoppingbasket.js | uglifyjs -c >dist/shoppingbasket.min.js"
   },
   "author": "Philip Hughson <phhu.git@gmail.com>",
   "license": "ISC"
