@@ -50,6 +50,14 @@ Altenatively browse the index.html file for a working example in the browser.
 
 https://cdn.rawgit.com/phhu/shoppingbasket/master/index.html
 
+From the browser console ```basket``` and ```receiptGenerator``` objects are available.
+
+```
+basket.empty().addItem("garlic").addItem("orange").removeItem("orange").addItem("papaya");
+console.log(basket.getContents());
+console.log(receiptGenerator.getReceipt(basket.getCostedContents()));
+```
+
 Tests
 =====
 
