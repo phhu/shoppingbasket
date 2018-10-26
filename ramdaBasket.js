@@ -6,7 +6,7 @@ const {
     ,concat, join, countBy
     ,gt, divide, add, subtract, multiply
     ,trim, toLower, replace, toUpper
-    ,has,prop, values, keys, defaultTo, evolve
+    ,has,prop, propOr, values, keys, defaultTo, evolve
     ,always, identity ,tap
   } = require('ramda')
   ,sprintf= curryN(2,require('sprintf-js').sprintf)
@@ -27,15 +27,15 @@ const toString = concat('');
 const tidyItem = pipe(toString,toLower,trim);
 const listToBasket = countBy(tidyItem);
 
-// *** basket Checker  - impure 
-const logInvalidItems = invalids => console.error(
+// *** basket Checker  
+const logInvalidItems_Impure = invalids => console.error(
   '\x1b[31m%s\x1b[0m'     // colour red
   ,`Invalid items will be ignored: ${invalids.join(" ")}\n`
 );
 const basketChecker = spec => unnest(pipe(
   keys
   ,reject(has(__,spec))
-  ,ifElse(isEmpty,always([]),tap(logInvalidItems))
+  ,ifElse(isEmpty,identity,tap(logInvalidItems_Impure)) 
   ,omit
 ));
 
@@ -45,6 +45,7 @@ const discounter = ({cost, discountEvery:n=0}) => count =>
 const calculateItem = spec => (count,item/*,basket*/) => ({
   item
   ,count
+  ,unitCost: spec[item].cost
   ,cost: multiply(spec[item].cost)(count) 
   ,discount: discounter(spec[item])(count)
   ,discountName: spec[item].discountName
@@ -52,37 +53,46 @@ const calculateItem = spec => (count,item/*,basket*/) => ({
 const basketCalculator = pipe(calculateItem,mapObjIndexed);
 
 // *** make receipt lines
+const toPounds = divide(__,100);
+const capitalise = replace(/^./, toUpper);
 const costLessDiscount = converge(subtract,[prop('cost'),prop('discount')]);
 const basketTotal = reduceWithAdd(costLessDiscount);
 const lineSpecs = {
-  item:{
-    format:'%(item)-21s %(count)3d %(cost)7.2f\n'
-    ,mapping: evolve({cost:divide(__,100),item:replace(/^./, toUpper)}) 
+  header:    {format:`ITEM ${' '.repeat(16)} UNIT CNT    COST\n`}
+  ,subHeader:{format:`---- ${' '.repeat(16)} ---- ---    ----\n`}
+  ,item:{
+    format:'%(item)-21s %(unitCost)3.2f %(count)3d %(cost)7.2f\n' 
+    ,mapping: evolve({
+      cost:toPounds
+      ,unitCost: toPounds
+      ,item: capitalise
+    }) 
   }
   ,discount: {
-    format:'* %(discountName)-23s %(discount)7.2f\n', 
-    mapping: evolve({discount:divide(__,-100),discountName:defaultTo('Discount')})
+    format:'* %(discountName)-28s %(discount)7.2f\n', 
+    mapping: evolve({discount:pipe(x=>-x,toPounds),discountName:defaultTo('Discount')})
   }
-  ,preTotal: {
-    format:" ".repeat(26) + '=======\n', 
-    mapping: identity
+  ,preTotal: { 
+    format:" ".repeat(31) + '=======\n', 
   }
   ,total: {
-    format:'TOTAL %27.2f\n', 
-    mapping: pipe(basketTotal,divide(__,100))
+    format:'TOTAL %32.2f\n', 
+    mapping: pipe(basketTotal,toPounds)
   }
 };
 const receiptLine = converge(pipe, [
-  prop('mapping')
-  ,pipe(prop('format'),sprintf)
+  propOr(identity,'mapping') 
+  ,pipe(propOr(' !! ERROR line has no format\n','format'),sprintf)
 ]);
 const line = map(receiptLine,lineSpecs);
 
 // *** assemble receipt 
-const optionalLine = (test, fn) => ifElse(where(test), fn, always(''));
+const optionalLine = (test, line) => ifElse(where(test), line, always(''));
 const receiptLines = pipe(joinTranformResults,reduceWithConcat);
 const receiptText = joinTranformResults([
-  receiptLines([
+  line.header
+  ,line.subHeader
+  ,receiptLines([
     line.item
     ,optionalLine({discount:gt(__,0)},line.discount)
   ])
@@ -93,7 +103,7 @@ const receiptText = joinTranformResults([
 // *** receipt maker 
 const receiptMaker = spec => pipe(
   listToBasket, 
-  basketChecker(spec),
+  basketChecker(spec), 
   basketCalculator(spec), 
   values,	// object of objects to array of objects
   receiptText
