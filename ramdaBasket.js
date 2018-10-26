@@ -45,7 +45,6 @@ const discounter = ({cost, discountEvery:n=0}) => count =>
 const calculateItem = spec => (count,item/*,basket*/) => ({
   item
   ,count
-  ,valid: has(item, spec) 
   ,cost: multiply(spec[item].cost)(count) 
   ,discount: discounter(spec[item])(count)
   ,discountName: spec[item].discountName
