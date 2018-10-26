@@ -29,7 +29,7 @@ const listToBasket = countBy(tidyItem);
 
 // *** basket Checker  - impure 
 const err = invalids => console.error(
-  `\x1b[31m%s\x1b[0m`     // colour red
+  '\x1b[31m%s\x1b[0m'     // colour red
   ,`Invalid items will be ignored: ${invalids.join(" ")}`
 );
 const basketChecker = spec => unnest(pipe(
@@ -93,19 +93,19 @@ const receiptText = joinTranformResults([
 
 // *** receipt maker 
 const receiptMaker = spec => pipe(
-	listToBasket, 
+  listToBasket, 
   basketChecker(spec),
-	basketCalculator(spec), 
-	values,	// object of objects to array of objects
-	receiptText
+  basketCalculator(spec), 
+  values,	// object of objects to array of objects
+  receiptText
 );
 
 // *** data
 const itemSpecs = {
-	'apple':  {cost: 25},
-	'orange': {cost: 30},
-	'garlic': {cost: 15},
-	'papaya': {cost: 50	,discountEvery: 3	,discountName: 'Discount 3 for 2'},
+  'apple':  {cost: 25},
+  'orange': {cost: 30},
+  'garlic': {cost: 15},
+  'papaya': {cost: 50, discountEvery: 3	,discountName: 'Discount 3 for 2'},
 };
 const list = ['apple','Apple', 'orange','papaya','papaya','papaya','papaya','somethingElse'];
 
