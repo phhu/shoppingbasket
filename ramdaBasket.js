@@ -28,14 +28,14 @@ const tidyItem = pipe(toString,toLower,trim);
 const listToBasket = countBy(tidyItem);
 
 // *** basket Checker  - impure 
-const err = invalids => console.error(
+const logInvalidItems = invalids => console.error(
   '\x1b[31m%s\x1b[0m'     // colour red
-  ,`Invalid items will be ignored: ${invalids.join(" ")}`
+  ,`Invalid items will be ignored: ${invalids.join(" ")}\n`
 );
 const basketChecker = spec => unnest(pipe(
   keys
   ,reject(has(__,spec))
-  ,ifElse(isEmpty,always([]),tap(err))
+  ,ifElse(isEmpty,always([]),tap(logInvalidItems))
   ,omit
 ));
 
@@ -105,7 +105,7 @@ const itemSpecs = {
   'apple':  {cost: 25},
   'orange': {cost: 30},
   'garlic': {cost: 15},
-  'papaya': {cost: 50, discountEvery: 3	,discountName: 'Discount 3 for 2'},
+  'papaya': {cost: 50, discountEvery: 3, discountName: 'Discount 3 for 2'},
 };
 const list = ['apple','Apple', 'orange','papaya','papaya','papaya','papaya','somethingElse'];
 
